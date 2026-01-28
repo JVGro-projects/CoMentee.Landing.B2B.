@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CoMentee для бизнеса | Платформа наставничества и управления экспертизой</title>
+  <meta name="description" content="CoMentee — B2B-платформа для развития экспертизы сотрудников, P2P-наставничества и подбора внутренних экспертов под задачи бизнеса и сообществ.">
+  <link rel="canonical" href="https://comentee.ru" />
+  <meta property="og:title" content="CoMentee для бизнеса" />
+  <meta property="og:description" content="Цифровая платформа для наставничества, обмена знаниями и развития экспертизы внутри организаций" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://comentee.ru" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    :root {
+      --background: 210 40% 98%;
+      --foreground: 222 80% 16%;          /* тёмно-синий текст */
+      --card: 0 0% 100%;
+      --card-foreground: 222 80% 16%;
+      --primary: 222 47% 31%;
+      --primary-foreground: 210 40% 98%;
+      --secondary: 210 40% 96%;
+      --secondary-foreground: 222 80% 16%;
+      --muted: 210 40% 96%;
+      --muted-foreground: 215 16% 47%;
+      --accent: 24 95% 53%;
+      --accent-foreground: 0 0% 100%;
+      --border: 214 32% 91%;
+      --ring: 222 47% 31%;
+      --radius: 0.75rem;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      color: hsl(var(--foreground));
+      line-height: 1.6;
+      background: hsl(var(--background));
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Header */
+    header {
+      background: hsl(var(--card) / 0.95);
+      backdrop-filter: blur(8px);
+      padding: 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .header-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 80px;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: 700;
+      color: hsl(var(--foreground));
+      text-decoration: none;
+    }
+
+    /* ✅ чтобы часть лого НЕ была оранжевой */
+    .logo span { color: inherit; }
+
+    nav { display: flex; gap: 32px; }
+
+    nav a {
+      color: hsl(var(--muted-foreground));
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    nav a:hover { color: hsl(var(--foreground)); }
+
+    .header-btn {
+      background: hsl(var(--primary));
+      color: hsl(var(--primary-foreground));
+      padding: 10px 24px;
+      border-radius: var(--radius);
+      text-decoration: none;
+      font-weight: 500;
+      transition: opacity 0.2s;
+    }
+
+    .header-btn:hover { opacity: 0.9; }
+
+    /* Hero Section */
+    .hero {
+      padding: 80px 0;
+      background: linear-gradient(to bottom right, hsl(var(--background)), hsl(var(--muted)));
+    }
+
+    .hero-content {
+      text-align: center;
+      max-width: 900px;
+      margin: 0 auto 48px;
+    }
+
+    .hero h1 {
+      font-size: 48px;
+      font-weight: 700;
+      margin-bottom: 24px;
+      line-height: 1.2;
+      color: hsl(var(--foreground));
+    }
+
+    .hero p {
+      font-size: 20px;
+      color: hsl(var(--muted-foreground));
+    }
+
+    .hero-cards {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .hero-card {
+      background: hsl(var(--card));
+      padding: 32px;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+      text-align: left;
+      transition: box-shadow 0.3s;
+    }
+
+    .hero-card:hover { box-shadow: 0 8px 30px rgba(0,0,0,0.1); }
+
+    .hero-card .icon-box {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .hero-card .icon-box.primary { background: hsl(var(--primary)); }
+    .hero-card .icon-box.accent { background: hsl(var(--accent)); }
+
+    .hero-card .icon-box svg {
+      width: 24px;
+      height: 24px;
+      stroke: hsl(var(--primary-foreground));
+    }
+
+    .hero-card h3 {
+      font-size: 20px;
+      margin-bottom: 12px;
+      color: hsl(var(--foreground));
+    }
+
+    .hero-card p {
+      font-size: 14px;
+      color: hsl(var(--muted-foreground));
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+
+    .card-btn {
+      display: inline-block;
+      padding: 12px 24px;
+      border-radius: var(--radius);
+      text-decoration: none;
+      font-weight: 500;
+      transition: opacity 0.2s;
+    }
+
+    .btn-primary {
+      background: hsl(var(--primary));
+      color: hsl(var(--primary-foreground));
+    }
+
+    .btn-outline {
+      border: 2px solid hsl(var(--primary));
+      color: hsl(var(--primary));
+      background: transparent;
+    }
+
+    /* Sections */
+    section { padding: 80px 0; }
+    section.alt-bg { background: hsl(var(--muted) / 0.5); }
+
+    .section-title {
+      font-size: 36px;
+      text-align: center;
+      margin-bottom: 16px;
+      color: hsl(var(--foreground));
+    }
+
+    .section-subtitle {
+      font-size: 18px;
+      color: hsl(var(--muted-foreground));
+      text-align: center;
+      margin-bottom: 48px;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* About Grid */
+    .about-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .about-card {
+      background: hsl(var(--card));
+      padding: 28px;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+      transition: all 0.3s;
+    }
+
+    .about-card:hover {
+      box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+      transform: translateY(-4px);
+    }
+
+    .about-card .icon {
+      width: 48px;
+      height: 48px;
+      background: hsl(var(--primary));
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .about-card .icon svg {
+      width: 24px;
+      height: 24px;
+      stroke: hsl(var(--primary-foreground));
+    }
+
+    .about-card h4 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: hsl(var(--foreground));
+    }
+
+    .about-card p {
+      font-size: 14px;
+      color: hsl(var(--muted-foreground));
+      line-height: 1.6;
+    }
+
+    /* Advantages Grid */
+    .advantages-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .advantage-card {
+      background: hsl(var(--card));
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+      text-align: center;
+      transition: all 0.3s;
+    }
+
+    .advantage-card:hover { box-shadow: 0 8px 30px rgba(0,0,0,0.1); }
+
+    .advantage-card:hover .icon { background: hsl(var(--primary)); }
+    .advantage-card:hover .icon svg { stroke: hsl(var(--primary-foreground)); }
+
+    .advantage-card .icon {
+      width: 40px;
+      height: 40px;
+      background: hsl(var(--secondary));
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+      transition: all 0.3s;
+    }
+
+    .advantage-card .icon svg {
+      width: 20px;
+      height: 20px;
+      stroke: hsl(var(--foreground));
+      transition: stroke 0.3s;
+    }
+
+    .advantage-card h4 {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: hsl(var(--foreground));
+    }
+
+    .advantage-card p {
+      font-size: 13px;
+      color: hsl(var(--muted-foreground));
+    }
+
+    /* How It Works */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 32px;
+    }
+
+    .step {
+      text-align: center;
+      position: relative;
+    }
+
+    .step:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      top: 32px;
+      left: 60%;
+      width: 80%;
+      height: 2px;
+      background: hsl(var(--border));
+    }
+
+    .step .icon-wrapper {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 64px;
+      height: 64px;
+      background: hsl(var(--primary));
+      border-radius: 16px;
+      margin-bottom: 20px;
+    }
+
+    .step .icon-wrapper svg {
+      width: 28px;
+      height: 28px;
+      stroke: hsl(var(--primary-foreground));
+    }
+
+    .step .number {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      width: 28px;
+      height: 28px;
+      background: hsl(var(--accent));
+      color: hsl(var(--accent-foreground));
+      border-radius: 50%;
+      font-size: 14px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .step h4 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: hsl(var(--foreground));
+    }
+
+    .step p {
+      font-size: 14px;
+      color: hsl(var(--muted-foreground));
+    }
+
+    /* VIDEO: один RuTube-плеер + обложка от RuTube */
+    .video-grid{
+      display:grid;
+      grid-template-columns: 1fr;     /* один элемент */
+      gap:16px;
+      max-width: 900px;              /* красиво по центру */
+      margin:0 auto;
+    }
+
+    .video-embed{
+      background:hsl(var(--card));
+      border-radius:12px;
+      overflow:hidden;
+      box-shadow:0 4px 20px rgba(0,0,0,0.06);
+    }
+
+    .video-embed .frame{
+      position:relative;
+      width:100%;
+      padding-top:56.25%; /* 16:9 */
+      background:hsl(var(--primary) / 0.05);
+    }
+
+    .video-embed iframe{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      border:0;
+    }
+
+    .video-embed .meta{
+      padding:12px 14px;
+    }
+
+    .video-embed .meta h4{
+      font-size:14px;
+      font-weight:600;
+      color:hsl(var(--foreground));
+      margin-bottom:2px;
+    }
+
+    .video-embed .meta p{
+      font-size:12px;
+      color:hsl(var(--muted-foreground));
+    }
+
+    /* Cases Grid */
+    .cases-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .case-card {
+      background: hsl(var(--card));
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+      border-left: 4px solid hsl(var(--primary));
+      transition: all 0.3s;
+    }
+
+    .case-card:hover { box-shadow: 0 8px 30px rgba(0,0,0,0.1); }
+
+    .case-card:hover .icon { background: hsl(var(--primary)); }
+    .case-card:hover .icon svg { stroke: hsl(var(--primary-foreground)); }
+
+    .case-card .inner {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .case-card .icon {
+      width: 40px;
+      height: 40px;
+      background: hsl(var(--secondary));
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: all 0.3s;
+    }
+
+    .case-card .icon svg {
+      width: 20px;
+      height: 20px;
+      stroke: hsl(var(--foreground));
+      transition: stroke 0.3s;
+    }
+
+    .case-card h4 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: hsl(var(--foreground));
+    }
+
+    .case-card p {
+      font-size: 14px;
+      color: hsl(var(--muted-foreground));
+    }
+
+    /* FAQ */
+    .faq-container {
+      max-width: 768px;
+      margin: 0 auto;
+    }
+
+    .faq-item {
+      background: hsl(var(--card));
+      border-radius: 12px;
+      padding: 0 24px;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+      overflow: hidden;
+    }
+
+    .faq-question {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 0;
+      cursor: pointer;
+      font-weight: 500;
+      color: hsl(var(--foreground));
+    }
+
+    .faq-question svg {
+      width: 20px;
+      height: 20px;
+      stroke: hsl(var(--muted-foreground));
+      transition: transform 0.3s;
+    }
+
+    .faq-item.open .faq-question svg {
+      transform: rotate(180deg);
+    }
+
+    .faq-answer {
+      padding-bottom: 20px;
+      color: hsl(var(--muted-foreground));
+      font-size: 14px;
+      line-height: 1.6;
+      display: none;
+    }
+
+    .faq-item.open .faq-answer {
+      display: block;
+    }
+
+    /* CTA */
+    .cta {
+      background: linear-gradient(to bottom right, hsl(var(--primary)), hsl(var(--foreground)));
+      padding: 80px 0;
+      text-align: center;
+    }
+
+    .cta h2 {
+      font-size: 36px;
+      font-weight: 700;
+      color: hsl(var(--primary-foreground));
+      margin-bottom: 16px;
+    }
+
+    .cta p {
+      color: hsl(var(--primary-foreground) / 0.8);
+      font-size: 18px;
+      margin-bottom: 32px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: hsl(var(--secondary));
+      color: hsl(var(--secondary-foreground));
+      padding: 14px 32px;
+      border-radius: var(--radius);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 16px;
+      transition: opacity 0.2s;
+    }
+
+    .cta-btn:hover { opacity: 0.9; }
+
+    .cta-btn svg {
+      width: 16px;
+      height: 16px;
+      stroke: currentColor;
+      transition: transform 0.2s;
+    }
+
+    .cta-btn:hover svg { transform: translateX(4px); }
+
+    /* Footer */
+    footer {
+      background: hsl(var(--foreground));
+      color: hsl(var(--primary-foreground));
+      padding: 48px 0 32px;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 32px;
+      border-bottom: 1px solid hsl(var(--primary-foreground) / 0.1);
+    }
+
+    footer .logo { color: hsl(var(--primary-foreground)); }
+    footer nav a { color: hsl(var(--primary-foreground) / 0.7); }
+    footer nav a:hover { color: hsl(var(--primary-foreground)); }
+
+    .footer-copyright {
+      text-align: center;
+      padding-top: 32px;
+      color: hsl(var(--primary-foreground) / 0.6);
+      font-size: 14px;
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .about-grid { grid-template-columns: repeat(2, 1fr); }
+      .advantages-grid { grid-template-columns: repeat(2, 1fr); }
+      .steps { grid-template-columns: repeat(2, 1fr); }
+      .step:not(:last-child)::after { display: none; }
+      .cases-grid { grid-template-columns: repeat(2, 1fr); }
+      .video-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      nav { display: none; }
+      .hero h1 { font-size: 32px; }
+      .hero-cards { grid-template-columns: 1fr; }
+      .about-grid { grid-template-columns: 1fr; }
+      .advantages-grid { grid-template-columns: repeat(2, 1fr); }
+      .steps { grid-template-columns: 1fr; }
+      .cases-grid { grid-template-columns: 1fr; }
+      .video-grid { grid-template-columns: 1fr; }
+      .section-title { font-size: 28px; }
+      .footer-inner { flex-direction: column; gap: 24px; }
+      footer nav { flex-wrap: wrap; justify-content: center; }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="container header-inner">
+    <a href="#" class="logo">Co<span>Mentee</span></a>
+    <nav>
+      <a href="#about">Решение</a>
+      <a href="#advantages">Преимущества</a>
+      <a href="#how">Как работает</a>
+      <a href="#video">Видео</a>
+      <a href="#cases">Сценарии</a>
+    </nav>
+    <a href="#contact" class="header-btn">Запросить демо</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="container">
+    <div class="hero-content">
+      <h1>CoMentee для бизнеса и сообществ</h1>
+      <p>Цифровая платформа для развития экспертизы, наставничества и подбора внутренних экспертов под задачи организаций</p>
+    </div>
+
+    <div class="hero-cards">
+      <div class="hero-card">
+        <div class="icon-box primary">
+          <i data-lucide="building-2"></i>
+        </div>
+        <h3>Для компаний</h3>
+        <p>Развитие сотрудников, внутренняя экспертиза, наставничество и снижение затрат на обучение</p>
+        <a href="#contact" class="card-btn btn-primary">Запросить пилот</a>
+      </div>
+      <div class="hero-card">
+        <div class="icon-box accent">
+          <i data-lucide="graduation-cap"></i>
+        </div>
+        <h3>Для сообществ и ВУЗов</h3>
+        <p>Наставничество, обмен знаниями, развитие участников и вовлечённость</p>
+        <a href="#contact" class="card-btn btn-outline">Обсудить внедрение</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="container">
+    <h2 class="section-title">Что решает CoMentee</h2>
+    <p class="section-subtitle">Платформа устраняет ключевые ограничения роста и эффективности организаций</p>
+
+    <div class="about-grid">
+      <div class="about-card">
+        <div class="icon"><i data-lucide="brain"></i></div>
+        <h4>Скрытые компетенции</h4>
+        <p>Выявление и использование навыков сотрудников вне рамок должностей</p>
+      </div>
+      <div class="about-card">
+        <div class="icon"><i data-lucide="handshake"></i></div>
+        <h4>Системное наставничество</h4>
+        <p>P2P-модель наставничества, масштабируемая на всю организацию</p>
+      </div>
+      <div class="about-card">
+        <div class="icon"><i data-lucide="zap"></i></div>
+        <h4>Быстрый подбор экспертов</h4>
+        <p>Автоматический поиск внутренних специалистов под задачи и проекты</p>
+      </div>
+      <div class="about-card">
+        <div class="icon"><i data-lucide="bar-chart-3"></i></div>
+        <h4>Метрики экспертизы</h4>
+        <p>Фиксация объёма и качества экспертных взаимодействий</p>
+      </div>
+      <div class="about-card">
+        <div class="icon"><i data-lucide="rocket"></i></div>
+        <h4>Развитие и удержание</h4>
+        <p>Рост вовлечённости и внутренняя мобильность сотрудников</p>
+      </div>
+      <div class="about-card">
+        <div class="icon"><i data-lucide="shield"></i></div>
+        <h4>Корпоративный контур</h4>
+        <p>Закрытая среда с интеграциями HR, LMS и SSO</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="advantages" class="alt-bg">
+  <div class="container">
+    <h2 class="section-title">Преимущества для организации</h2>
+    <p class="section-subtitle">Измеримый эффект для бизнеса и сообществ</p>
+
+    <div class="advantages-grid">
+      <div class="advantage-card">
+        <div class="icon"><i data-lucide="wallet"></i></div>
+        <h4>Экономия бюджета</h4>
+        <p>Снижение затрат на внешнее обучение</p>
+      </div>
+      <div class="advantage-card">
+        <div class="icon"><i data-lucide="timer"></i></div>
+        <h4>Скорость</h4>
+        <p>Подбор экспертов за минуты</p>
+      </div>
+      <div class="advantage-card">
+        <div class="icon"><i data-lucide="trending-up"></i></div>
+        <h4>Масштабируемость</h4>
+        <p>От 100 до 10 000+ пользователей</p>
+      </div>
+      <div class="advantage-card">
+        <div class="icon"><i data-lucide="heart"></i></div>
+        <h4>Вовлечённость</h4>
+        <p>Рост активности и обмена знаниями</p>
+      </div>
+      <div class="advantage-card">
+        <div class="icon"><i data-lucide="users"></i></div>
+        <h4>P2P-модель</h4>
+        <p>Каждый участник — эксперт</p>
+      </div>
+      <div class="advantage-card">
+        <div class="icon"><i data-lucide="target"></i></div>
+        <h4>Навыковый подход</h4>
+        <p>Фокус на реальных компетенциях</p>
+      </div>
+      <div class="advantage-card">
+        <div class="icon"><i data-lucide="plug"></i></div>
+        <h4>Интеграции</h4>
+        <p>HR, LMS, API, SSO</p>
+      </div>
+      <div class="advantage-card">
+        <div class="icon"><i data-lucide="settings"></i></div>
+        <h4>Гибкость</h4>
+        <p>Под корпоративные задачи</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="container">
+    <h2 class="section-title">Как это работает</h2>
+    <p class="section-subtitle">Простой путь внедрения в организацию</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="icon-wrapper">
+          <i data-lucide="user-circle"></i>
+          <span class="number">1</span>
+        </div>
+        <h4>Профили</h4>
+        <p>Оцифровка навыков и опыта участников</p>
+      </div>
+      <div class="step">
+        <div class="icon-wrapper">
+          <i data-lucide="shuffle"></i>
+          <span class="number">2</span>
+        </div>
+        <h4>Сопоставление</h4>
+        <p>Автоподбор экспертов под запросы</p>
+      </div>
+      <div class="step">
+        <div class="icon-wrapper">
+          <i data-lucide="message-square"></i>
+          <span class="number">3</span>
+        </div>
+        <h4>Взаимодействие</h4>
+        <p>Наставничество и обмен знаниями</p>
+      </div>
+      <div class="step">
+        <div class="icon-wrapper">
+          <i data-lucide="line-chart"></i>
+          <span class="number">4</span>
+        </div>
+        <h4>Аналитика</h4>
+        <p>Метрики, развитие и масштабирование</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="video" class="alt-bg">
+  <div class="container">
+    <h2 class="section-title">Посмотрите платформу в действии</h2>
+    <p class="section-subtitle">Видео-гайды помогут понять, как CoMentee решает задачи вашей организации</p>
+
+    <div class="video-grid">
+      <!-- ОДИН РОЛИК -->
+      <div class="video-embed">
+        <div class="frame">
+          <iframe
+            src="https://rutube.ru/play/embed/9abc6384173ff92cc289fd267c938d49?p=N-VxyHHXgE7sUVizy4LUkA"
+            allow="autoplay; encrypted-media; picture-in-picture"
+            allowfullscreen
+            loading="lazy"
+            title="Как работает CoMentee"
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </div>
+        <div class="meta">
+          <h4>Как работает CoMentee</h4>
+          <p>Обзор платформы</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="cases">
+  <div class="container">
+    <h2 class="section-title">Типовые сценарии</h2>
+    <p class="section-subtitle">Как CoMentee используется в организациях</p>
+
+    <div class="cases-grid">
+      <div class="case-card">
+        <div class="inner">
+          <div class="icon"><i data-lucide="search"></i></div>
+          <div>
+            <h4>Внутренние эксперты</h4>
+            <p>Поиск специалистов под проекты</p>
+          </div>
+        </div>
+      </div>
+      <div class="case-card">
+        <div class="inner">
+          <div class="icon"><i data-lucide="user-check"></i></div>
+          <div>
+            <h4>Наставничество</h4>
+            <p>Онбординг и развитие сотрудников</p>
+          </div>
+        </div>
+      </div>
+      <div class="case-card">
+        <div class="inner">
+          <div class="icon"><i data-lucide="users"></i></div>
+          <div>
+            <h4>Сообщества</h4>
+            <p>Рост ценности и вовлечённости</p>
+          </div>
+        </div>
+      </div>
+      <div class="case-card">
+        <div class="inner">
+          <div class="icon"><i data-lucide="award"></i></div>
+          <div>
+            <h4>Лидерство</h4>
+            <p>Развитие soft skills и P2P-лидерства</p>
+          </div>
+        </div>
+      </div>
+      <div class="case-card">
+        <div class="inner">
+          <div class="icon"><i data-lucide="book-open"></i></div>
+          <div>
+            <h4>Обучение</h4>
+            <p>Дополнение LMS живой экспертизой</p>
+          </div>
+        </div>
+      </div>
+      <div class="case-card">
+        <div class="inner">
+          <div class="icon"><i data-lucide="school"></i></div>
+          <div>
+            <h4>ВУЗы</h4>
+            <p>Связь студентов с практиками</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="faq" class="alt-bg">
+  <div class="container">
+    <h2 class="section-title">Часто задаваемые вопросы</h2>
+    <p class="section-subtitle">Ответы на популярные вопросы о платформе</p>
+
+    <div class="faq-container">
+      <div class="faq-item">
+        <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+          Как быстро можно запустить пилот?
+          <i data-lucide="chevron-down"></i>
+        </div>
+        <div class="faq-answer">
+          Пилотный проект запускается в течение 2-3 недель. Мы помогаем с настройкой платформы, импортом данных сотрудников и обучением администраторов.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+          Какие интеграции поддерживает платформа?
+          <i data-lucide="chevron-down"></i>
+        </div>
+        <div class="faq-answer">
+          CoMentee интегрируется с популярными HR-системами, LMS-платформами, корпоративными порталами. Поддерживаем SSO (SAML, OAuth), API для кастомных интеграций.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+          Как обеспечивается безопасность данных?
+          <i data-lucide="chevron-down"></i>
+        </div>
+        <div class="faq-answer">
+          Данные хранятся в защищённом контуре с шифрованием. Поддерживаем размещение на серверах клиента (on-premise) или в частном облаке. Соответствуем требованиям 152-ФЗ.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+          Сколько пользователей может работать на платформе?
+          <i data-lucide="chevron-down"></i>
+        </div>
+        <div class="faq-answer">
+          Платформа масштабируется от 100 до 10 000+ пользователей. Архитектура позволяет обслуживать крупные корпорации с распределённой структурой.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+          Какая модель ценообразования?
+          <i data-lucide="chevron-down"></i>
+        </div>
+        <div class="faq-answer">
+          Гибкая модель: подписка за активного пользователя или фиксированная стоимость для определённого количества лицензий. Скидки для образовательных учреждений.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="cta">
+  <div class="container">
+    <h2>Готовы запустить пилот?</h2>
+    <p>Покажем CoMentee на примере вашей организации</p>
+    <a href="https://t.me/Comentee_bot" class="cta-btn" target="_blank" rel="noopener noreferrer">
+      Запросить демо
+      <i data-lucide="arrow-right"></i>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <a href="#" class="logo">Co<span>Mentee</span></a>
+      <nav>
+        <a href="#about">Решение</a>
+        <a href="#advantages">Преимущества</a>
+        <a href="#how">Как работает</a>
+        <a href="#cases">Сценарии</a>
+      </nav>
+    </div>
+    <p class="footer-copyright">© 2025 CoMentee — платформа для наставничества и управления экспертизой</p>
+  </div>
+</footer>
+
+<script>
+  lucide.createIcons();
+</script>
+
+</body>
+</html>
